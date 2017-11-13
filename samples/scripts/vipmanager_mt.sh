@@ -290,10 +290,10 @@ case $ACTION in
                         echo "VIP $VIP is working but not on $HOST machine"
                     exit 1
                 fi
-                #if [ $VERBOSE -eq 1 ] ; then
+                if [ $VERBOSE -eq 1 ] ; then
                     echo "VIP at $VIP is correctly working"
                     echo -en $log_success_msg
-                #fi
+                fi
               exit 0
             fi
     ;;

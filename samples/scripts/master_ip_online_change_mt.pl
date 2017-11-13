@@ -145,13 +145,13 @@ sub main {
 
       ## Drop application user so that nobody can connect. Disabling per-session binlog beforehand
       $orig_master_handler->disable_log_bin_local();
-      print current_time_us() . " Dropping app user on the orig master..\n";
+      #print current_time_us() . " Dropping app user on the orig master..\n";
       #FIXME_xxx_drop_app_user($orig_master_handler);
 
       eval {
-       $bash_error =  `/opt/mha_software/scripts/vipmanager_mt.sh stop -h $orig_master_ip `;
+       $bash_error =  `/opt/mha_software/scripts/vipmanager_mt.sh stop -s sudo -h $orig_master_ip `;
       };
-      if ($bash_error = ) {
+      if ($bash_error) {
           warn "Got Error: $bash_error = \n";
           exit $exit_code;
       }
@@ -263,7 +263,7 @@ sub main {
 		exit $exit_code;
     }
 
-	$bash_error = `/opt/mha_software/scripts/vipmanager_mt.sh start -h $new_master_ip `;
+	$bash_error = `/opt/mha_software/scripts/vipmanager_mt.sh start -s sudo -h $new_master_ip `;
     if ($bash_error) {
       warn "Got Error: $bash_error\n";
       exit $exit_code;
