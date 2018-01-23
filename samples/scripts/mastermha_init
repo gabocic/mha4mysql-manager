@@ -1,0 +1,29 @@
+#!/bin/bash
+
+param1=$1
+mhadir=/opt/mha_software/mha4mysql-manager-0.56
+mhaconf=/etc/mha.cnf
+mhalog=/tmp/mha.log
+
+case $param1 in
+start)
+    if [ -f $mhadir/masterha.lock ]
+    then
+        echo "MHA manager already running"
+    else
+        echo "Starting MHA manager..."
+        nohup $mhadir/bin/masterha_manager --conf=$mhaconf  < /dev/null > $mhalog 2>&1 &
+        touch $mhadir/masterha.lock
+    fi
+    ;;
+stop)
+    echo "Stopping MHA manager..."
+    $mhadir/bin/masterha_stop --conf=$mhaconf
+    rm -f $mhadir/masterha.lock
+    ;;
+status)
+    $mhadir/bin/masterha_check_status --conf=$mhaconf
+    ;;
+*)
+    echo "Usage: mastermha_init [ start | stop | status ]" 
+esac
